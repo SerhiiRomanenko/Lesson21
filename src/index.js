@@ -1,35 +1,34 @@
 'use strict';
 
-const START_FROM = 0;
+const START_FROM = 1;
 const MAX_NUM_OF_ROWS = 10;
 
 //------------------- 1st exercise
 
 function generateList(array) {
-    let $list = '<ul>';
-    for (let i = START_FROM; i < array.length; i++) {
-        if (Array.isArray(array[i])) {
-            $list += '<ul>';
-            for (let j = START_FROM; j < array[i].length; j++) {
-                $list += `<li>${array[i][j]}</li>`;
-            }
-            $list += '</ul>';
+    const $list = document.createElement('ul');
+
+    for (const elem of array) {
+        if (!Array.isArray(elem)) {
+            const $li = document.createElement('li');
+            $li.innerHTML = elem;
+            $list.append($li);
         } else {
-            $list += `<li>${array[i]}</li>`;
+            $list.append(generateList(elem));
         }
     }
-    $list += '</ul>';
-    return (document.querySelector('section').innerHTML += $list);
+    document.body.append($list);
+    return $list;
 }
-generateList([MAX_NUM_OF_ROWS]);
-// generateList([1, 2, [2.1, 2.2, 2.3], 3]);
+generateList([START_FROM, MAX_NUM_OF_ROWS]);
+// generateList([1, 2, [2.1, 2.2, [2.21], 2.3], 3]);
 
 //------------------- 2nd exercise
 
 let $table = '<table>';
 let counter = 1;
 
-for (let i = 1; i <= MAX_NUM_OF_ROWS; i++) {
+for (let i = START_FROM; i <= MAX_NUM_OF_ROWS; i++) {
     $table += '<tr>';
     for (let j = 1; j <= MAX_NUM_OF_ROWS; j++) {
         $table += `<td>${counter++}</td>`;
